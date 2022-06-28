@@ -15,6 +15,30 @@ stages:
       - bash: echo $(Build.SourceBranchName)
       - bash: echo $(Build.SourcesDirectory)
       - bash: echo $(System.DefaultWorkingDirectory)
+      - bash: ls -r  $(System.DefaultWorkingDirectory)
+      - bash: echo $(Build.ArtifactStagingDirectory)
+*************************************************************************************************************************
+Use Case 9
+
+Publish Artifacts
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+stages:
+- stage: Build
+  jobs:
+    - job: firstjob
+      steps:
+      - bash: echo Build First Job
+      - bash: echo $(pipelineLevelVariable)
+      - bash: echo $(Build.BuildNumber)
+      - bash: echo $(Build.BuildId)
+      - bash: echo $(Build.SourceBranchName)
+      - bash: echo $(Build.SourcesDirectory)
+      - bash: echo $(System.DefaultWorkingDirectory)
       - bash: ls -R  $(System.DefaultWorkingDirectory)
       - bash: echo $(System.DefaultWorkingDirectory)
       - bash: echo $(Build.ArtifactStagingDirectory)
@@ -22,15 +46,15 @@ stages:
       - bash: node --version
       - bash: python --version
       - bash: mvn -version
-      - bash: ls -R $(Build.ArtifactsStagingDirectory)
+      - bash: ls -R $(Build.ArtifactStagingDirectory)
       - task: CopyFiles@2
         inputs:
           SourceFolder: '$(System.DefaultWorkingDirectory)'
           Contents: |
             **/*.yml
             **/*.java
-          TargetFolder: '$(Build.ArtifactsStagingDirectory)'
-      - bash: ls -R $(Build.ArtifactsStagingDirectory)
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      - bash: ls -R $(Build.ArtifactStagingDirectory)
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
